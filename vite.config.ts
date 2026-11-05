@@ -12,4 +12,17 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    // Pre-bundle UI deps at startup so Vite never re-optimizes mid-session,
+    // which leaves open tabs with two React copies ("reading 'useState'" of null).
+    optimizeDeps: {
+      include: [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "clsx",
+        "tailwind-merge",
+        "lucide-react",
+      ],
+    },
+  },
 });
