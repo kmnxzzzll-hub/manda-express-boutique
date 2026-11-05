@@ -26,11 +26,9 @@ describe("Reserva pelo WhatsApp", () => {
 });
 
 describe("Catálogo", () => {
-  it("respeita o máximo inicial: 2 relógios, 3 tênis, 3 roupas", () => {
-    const count = (id: string) => produtos.filter((p) => p.categoria === id).length;
-    expect(count("relogios")).toBeLessThanOrEqual(2);
-    expect(count("tenis")).toBeLessThanOrEqual(3);
-    expect(count("roupas")).toBeLessThanOrEqual(3);
+  it("mostra só 3 cartões: um relógio, um tênis e uma roupa", () => {
+    expect(produtos).toHaveLength(3);
+    expect(produtos.map((p) => p.categoria)).toEqual(["relogios", "tenis", "roupas"]);
   });
 
   it("mostra o nome legível da categoria", () => {
