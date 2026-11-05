@@ -28,3 +28,9 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- Products and categories live only in `src/data/catalogo.ts`; components read from it so the catalog is edited in one place.
+- All WhatsApp links and prefilled messages are built by `src/lib/whatsapp.ts` (covered by `src/test/whatsapp.test.ts`); never hand-write wa.me URLs in components.
+- The landing page is one route (`/`) with in-page anchor sections, because the client explicitly asked for a single scrolling page.
