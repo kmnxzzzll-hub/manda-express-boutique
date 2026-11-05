@@ -7,7 +7,7 @@ export function ProductCard({ produto }: { produto: Produto }) {
   const categoria = nomeCategoria(produto.categoria);
 
   return (
-    <article className="group flex h-full flex-col">
+    <article id={`produto-${produto.categoria}`} className="group flex h-full scroll-mt-24 flex-col">
       <div className="overflow-hidden rounded-lg bg-beige transition-shadow duration-500 group-hover:shadow-soft">
         <img
           src={produto.imagem}
@@ -19,18 +19,17 @@ export function ProductCard({ produto }: { produto: Produto }) {
           className="zoom-on-hover aspect-[4/5] w-full object-cover"
         />
       </div>
-      <div className="flex flex-1 flex-col pt-5">
-        <p className="eyebrow">{categoria}</p>
-        <h3 className="mt-2 text-lg font-semibold">{produto.nome}</h3>
+      <div className="flex flex-1 flex-col pt-6">
+        <h3 className="text-xl font-semibold">{produto.titulo}</h3>
         <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
           {produto.descricao}
         </p>
-        <Button asChild variant="storeOutline" size="storeSm" className="mt-5 w-full">
+        <Button asChild variant="store" size="store" className="mt-6 w-full">
           <a
-            href={productReservationLink(produto.nome, categoria)}
+            href={productReservationLink(produto.referencia, categoria)}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`Reservar ${produto.nome} pelo WhatsApp`}
+            aria-label={`Reservar ${produto.titulo.toLowerCase()} pelo WhatsApp`}
           >
             <WhatsAppIcon />
             Reservar agora

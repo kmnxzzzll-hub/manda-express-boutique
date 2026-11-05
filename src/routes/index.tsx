@@ -1,11 +1,10 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import type { CategoriaId } from "@/data/catalogo";
 import { SiteHeader } from "@/components/store/SiteHeader";
 import { Hero } from "@/components/store/Hero";
-import { Categories } from "@/components/store/Categories";
-import { ProductCatalog, type Filtro } from "@/components/store/ProductCatalog";
+import { ProductCatalog } from "@/components/store/ProductCatalog";
 import { HowToReserve } from "@/components/store/HowToReserve";
 import { CallToAction } from "@/components/store/CallToAction";
 import { SiteFooter } from "@/components/store/SiteFooter";
@@ -32,11 +31,10 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [filtro, setFiltro] = useState<Filtro>("todos");
-
-  const selecionarCategoria = useCallback((id: CategoriaId) => {
-    setFiltro(id);
-    document.getElementById("produtos")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const irParaCategoria = useCallback((id: CategoriaId) => {
+    document
+      .getElementById(`produto-${id}`)
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
   return (
@@ -44,12 +42,11 @@ function Index() {
       <SiteHeader />
       <main>
         <Hero />
-        <Categories onSelect={selecionarCategoria} />
-        <ProductCatalog filtro={filtro} onFiltroChange={setFiltro} />
+        <ProductCatalog />
         <HowToReserve />
         <CallToAction />
       </main>
-      <SiteFooter onSelectCategoria={selecionarCategoria} />
+      <SiteFooter onSelectCategoria={irParaCategoria} />
       <WhatsAppFloat />
     </>
   );
