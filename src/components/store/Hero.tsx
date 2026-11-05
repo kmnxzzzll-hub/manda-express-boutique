@@ -26,7 +26,7 @@ export function Hero() {
             </p>
           </Reveal>
           <Reveal delay={300}>
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Button asChild variant="store" size="store">
                 <a href="#produtos">
                   Explorar produtos
