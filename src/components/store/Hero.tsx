@@ -1,6 +1,5 @@
 import { ArrowDown } from "lucide-react";
 
-import brandMark from "@/assets/manda-express-wordmark.svg";
 import { Button } from "@/components/ui/button";
 import { generalReservationLink } from "@/lib/whatsapp";
 import { Reveal } from "./Reveal";
@@ -12,7 +11,6 @@ export function Hero() {
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 pb-20 md:px-8 md:pb-28 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-8">
           <Reveal>
-            <img src={brandMark} alt="Manda Express" width="280" height="51" className="mb-9 h-auto w-52 md:w-64" />
             <p className="eyebrow">Boutique · Angola</p>
           </Reveal>
           <Reveal delay={100}>
