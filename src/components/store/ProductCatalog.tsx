@@ -1,7 +1,8 @@
-import { categorias, produtos, type CategoriaId } from "@/data/catalogo";
+import { categorias, type CategoriaId } from "@/data/catalogo";
 import { cn } from "@/lib/utils";
-import { ProductCard } from "./ProductCard";
+import { buildProductReservationMessage, whatsappLink } from "@/lib/whatsapp";
 import { Reveal } from "./Reveal";
+import { WhatsAppIcon } from "./WhatsAppIcon";
 
 type FiltroCategoria = CategoriaId | "todos";
 
@@ -10,93 +11,74 @@ interface ProductCatalogProps {
   onSelectCategoria: (id: FiltroCategoria) => void;
 }
 
-export function ProductCatalog({
-  categoriaAtiva,
-  onSelectCategoria,
-}: ProductCatalogProps) {
-  const produtosVisiveis =
+const descricoes: Record<CategoriaId, string> = {
+  relogios: "Descobre as opções de relógios disponíveis e pede informações diretamente à equipa.",
+  tenis: "Conhece os modelos disponíveis e confirma detalhes através do WhatsApp.",
+  roupas: "Fala connosco para saber mais sobre as peças disponíveis nesta categoria.",
+};
+
+export function ProductCatalog({ categoriaAtiva, onSelectCategoria }: ProductCatalogProps) {
+  const categoriasVisiveis =
     categoriaAtiva === "todos"
-      ? produtos
-      : produtos.filter((produto) => produto.categoria === categoriaAtiva);
-  const temDemonstrativas = produtosVisiveis.some((produto) => produto.demonstrativa);
-  const filtros: { id: FiltroCategoria; nome: string }[] = [
-    { id: "todos", nome: "Todos" },
-    ...categorias.map((categoria) => ({ id: categoria.id, nome: categoria.nome })),
-  ];
+      ? categorias
+      : categorias.filter((categoria) => categoria.id === categoriaAtiva);
 
   return (
     <section id="produtos" aria-labelledby="produtos-titulo" className="bg-background py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <Reveal className="max-w-xl">
-          <p className="eyebrow">A seleção Manda Express</p>
+          <p className="eyebrow">Explora a boutique</p>
           <h2 id="produtos-titulo" className="mt-4 text-3xl font-semibold md:text-4xl">
-            Produtos em destaque
+            Encontra a tua categoria
           </h2>
           <p className="mt-4 leading-relaxed text-muted-foreground">
-            Peças selecionadas para completar o teu estilo. Escolhe uma categoria e encontra o
-            artigo que procuras.
+            Consulta as categorias e contacta a Manda Express para conhecer os artigos reais e a respetiva disponibilidade.
           </p>
         </Reveal>
 
-        <div
-          className="mt-9 flex flex-wrap gap-2"
-          role="group"
-          aria-label="Filtrar produtos por categoria"
-        >
-          {filtros.map((filtro) => {
-            const ativo = categoriaAtiva === filtro.id;
-
-            return (
-              <button
-                key={filtro.id}
-                type="button"
-                aria-pressed={ativo}
-                aria-controls="lista-produtos"
-                onClick={() => onSelectCategoria(filtro.id)}
-                className={cn(
-                  "rounded-full border px-5 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                  ativo
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border bg-background text-muted-foreground hover:border-primary/30 hover:text-foreground",
-                )}
-              >
-                {filtro.nome}
-              </button>
-            );
-          })}
+        <div className="mt-9 flex flex-wrap gap-2" role="group" aria-label="Filtrar categorias">
+          <button
+            type="button"
+            aria-pressed={categoriaAtiva === "todos"}
+            onClick={() => onSelectCategoria("todos")}
+            className={cn("rounded-full border px-5 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2", categoriaAtiva === "todos" ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-muted-foreground hover:border-primary/30 hover:text-foreground")}
+          >
+            Todas
+          </button>
+          {categorias.map((categoria) => (
+            <button
+              key={categoria.id}
+              type="button"
+              aria-pressed={categoriaAtiva === categoria.id}
+              onClick={() => onSelectCategoria(categoria.id)}
+              className={cn("rounded-full border px-5 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2", categoriaAtiva === categoria.id ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-muted-foreground hover:border-primary/30 hover:text-foreground")}
+            >
+              {categoria.nome}
+            </button>
+          ))}
         </div>
 
-        <p className="mt-4 text-xs text-muted-foreground" role="status" aria-live="polite">
-          {produtosVisiveis.length}{" "}
-          {produtosVisiveis.length === 1 ? "produto nesta seleção" : "produtos nesta seleção"}
-        </p>
-
-        <ul
-          id="lista-produtos"
-          className="mt-8 grid grid-cols-1 gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8"
-        >
-          {produtosVisiveis.map((produto, index) => (
-            <li
-              key={produto.id}
-              className={
-                produtosVisiveis.length === 1
-                  ? "sm:col-span-2 sm:mx-auto sm:w-1/2 lg:col-span-3 lg:w-1/3"
-                  : undefined
-              }
-            >
-              <Reveal delay={index * 100} className="h-full">
-                <ProductCard produto={produto} />
+        <ul className="mt-10 grid gap-4 md:grid-cols-3">
+          {categoriasVisiveis.map((categoria, index) => (
+            <li key={categoria.id}>
+              <Reveal delay={index * 90}>
+                <article className="flex h-full min-h-64 flex-col border border-border bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-soft md:p-8">
+                  <span className="font-display text-xs tracking-[0.22em] text-muted-foreground">0{categorias.findIndex((item) => item.id === categoria.id) + 1}</span>
+                  <h3 className="mt-9 text-2xl font-semibold">{categoria.nome}</h3>
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{descricoes[categoria.id]}</p>
+                  <a
+                    href={whatsappLink(buildProductReservationMessage("Informações sobre artigos disponíveis", categoria.nome))}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-7 inline-flex items-center gap-2 text-sm font-semibold underline decoration-primary/30 underline-offset-4 transition-colors hover:decoration-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    Consultar pelo WhatsApp <WhatsAppIcon className="h-4 w-4" />
+                  </a>
+                </article>
               </Reveal>
             </li>
           ))}
         </ul>
-
-        {temDemonstrativas && (
-          <p className="mt-12 border-t border-border pt-5 text-center text-xs leading-relaxed text-muted-foreground">
-            As fotografias assinaladas são ilustrativas. Confirma a disponibilidade e os detalhes
-            de cada artigo diretamente com a Manda Express pelo WhatsApp.
-          </p>
-        )}
       </div>
     </section>
   );
