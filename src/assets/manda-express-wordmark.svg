@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 76" role="img" aria-labelledby="title">
+  <title id="title">Manda Express</title>
+  <g fill="#202020">
+    <path d="M4 58V18h8l12 19 12-19h8v40h-9V34L24 50 13 34v24z"/>
+    <text x="58" y="37" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="600" letter-spacing="3">MANDA</text>
+    <text x="59" y="58" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="500" letter-spacing="5.2">EXPRESS</text>
+  </g>
+</svg>
