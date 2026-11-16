@@ -20,10 +20,13 @@ export function SiteFooter({ onSelectCategoria }: { onSelectCategoria: (id: Cate
         <nav aria-label="Links do rodapé" className="md:col-span-2">
           <h2 className="eyebrow">Navegação</h2>
           <ul className="mt-5 space-y-3 text-sm">
-            {navLinks.map((l) => (
-              <li key={l.href}>
-                <a href={l.href} className="transition-colors hover:text-muted-foreground">
-                  {l.label}
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className="rounded-sm transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  {link.label}
                 </a>
               </li>
             ))}
@@ -33,14 +36,15 @@ export function SiteFooter({ onSelectCategoria }: { onSelectCategoria: (id: Cate
         <div className="md:col-span-2">
           <h2 className="eyebrow">Categorias</h2>
           <ul className="mt-5 space-y-3 text-sm">
-            {categorias.map((c) => (
-              <li key={c.id}>
+            {categorias.map((categoria) => (
+              <li key={categoria.id}>
                 <button
                   type="button"
-                  onClick={() => onSelectCategoria(c.id)}
-                  className="transition-colors hover:text-muted-foreground"
+                  onClick={() => onSelectCategoria(categoria.id)}
+                  aria-label={`Ver produtos da categoria ${categoria.nome}`}
+                  className="rounded-sm text-left transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
-                  {c.nome}
+                  {categoria.nome}
                 </button>
               </li>
             ))}
@@ -53,7 +57,7 @@ export function SiteFooter({ onSelectCategoria }: { onSelectCategoria: (id: Cate
             href={whatsappLink()}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-5 inline-flex items-center gap-2 text-sm transition-colors hover:text-muted-foreground"
+            className="mt-5 inline-flex items-center gap-2 text-sm transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             <WhatsAppIcon className="h-4 w-4" />
             WhatsApp {WHATSAPP_DISPLAY}
@@ -62,7 +66,7 @@ export function SiteFooter({ onSelectCategoria }: { onSelectCategoria: (id: Cate
       </div>
       <div className="border-t border-primary/10">
         <p className="mx-auto max-w-7xl px-5 py-6 text-xs text-muted-foreground md:px-8">
-          © 2026 Manda Express. Todos os direitos reservados.
+          © {new Date().getFullYear()} Manda Express. Todos os direitos reservados.
         </p>
       </div>
     </footer>

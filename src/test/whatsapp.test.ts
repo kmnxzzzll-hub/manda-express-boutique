@@ -31,6 +31,15 @@ describe("Catálogo", () => {
     expect(produtos.map((p) => p.categoria)).toEqual(["relogios", "tenis", "roupas"]);
   });
 
+  it("mantém identificadores únicos para cada produto", () => {
+    const ids = produtos.map((produto) => produto.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("marca as fotografias atuais como demonstrativas", () => {
+    expect(produtos.every((produto) => produto.demonstrativa)).toBe(true);
+  });
+
   it("mostra o nome legível da categoria", () => {
     expect(nomeCategoria("tenis")).toBe("Tênis");
   });

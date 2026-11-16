@@ -7,8 +7,11 @@ export function ProductCard({ produto }: { produto: Produto }) {
   const categoria = nomeCategoria(produto.categoria);
 
   return (
-    <article id={`produto-${produto.categoria}`} className="group flex h-full scroll-mt-24 flex-col">
-      <div className="overflow-hidden rounded-lg bg-beige transition-shadow duration-500 group-hover:shadow-soft">
+    <article
+      id={`produto-${produto.id}`}
+      className="group flex h-full scroll-mt-24 flex-col"
+    >
+      <div className="relative overflow-hidden rounded-lg bg-beige transition-shadow duration-500 group-hover:shadow-soft">
         <img
           src={produto.imagem}
           alt={produto.alt}
@@ -18,9 +21,15 @@ export function ProductCard({ produto }: { produto: Produto }) {
           decoding="async"
           className="zoom-on-hover aspect-[4/5] w-full object-cover"
         />
+        {produto.demonstrativa && (
+          <span className="absolute left-3 top-3 rounded-full border border-border/70 bg-background/95 px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-foreground shadow-sm">
+            Imagem ilustrativa
+          </span>
+        )}
       </div>
-      <div className="flex flex-1 flex-col pt-6">
-        <h3 className="text-xl font-semibold">{produto.titulo}</h3>
+      <div className="flex flex-1 flex-col pt-5">
+        <p className="eyebrow">{categoria}</p>
+        <h3 className="mt-2 text-xl font-semibold">{produto.titulo}</h3>
         <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
           {produto.descricao}
         </p>

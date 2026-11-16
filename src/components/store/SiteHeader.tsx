@@ -17,6 +17,17 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
   return (
     <header
       className={cn(
@@ -35,13 +46,13 @@ export function SiteHeader() {
 
         <nav aria-label="Navegação principal" className="hidden md:block">
           <ul className="flex items-center gap-9">
-            {navLinks.map((l) => (
-              <li key={l.href}>
+            {navLinks.map((link) => (
+              <li key={link.href}>
                 <a
-                  href={l.href}
-                  className="font-display text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground"
+                  href={link.href}
+                  className="rounded-sm font-display text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
-                  {l.label}
+                  {link.label}
                 </a>
               </li>
             ))}
@@ -56,11 +67,11 @@ export function SiteHeader() {
           </Button>
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-foreground transition-colors hover:bg-accent md:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hidden"
             aria-label={open ? "Fechar menu" : "Abrir menu"}
             aria-expanded={open}
             aria-controls="menu-movel"
-            onClick={() => setOpen((v) => !v)}
+            onClick={() => setOpen((value) => !value)}
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -69,6 +80,8 @@ export function SiteHeader() {
 
       <div
         id="menu-movel"
+        aria-hidden={!open}
+        inert={!open}
         className={cn(
           "overflow-hidden transition-[max-height] duration-500 md:hidden",
           open ? "max-h-96" : "max-h-0",
@@ -76,20 +89,25 @@ export function SiteHeader() {
       >
         <nav aria-label="Navegação móvel" className="px-5 pb-6">
           <ul className="flex flex-col divide-y divide-border border-t border-border">
-            {navLinks.map((l) => (
-              <li key={l.href}>
+            {navLinks.map((link) => (
+              <li key={link.href}>
                 <a
-                  href={l.href}
+                  href={link.href}
                   onClick={() => setOpen(false)}
-                  className="block py-4 font-display text-sm font-medium uppercase tracking-[0.18em]"
+                  className="block py-4 font-display text-sm font-medium uppercase tracking-[0.18em] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
-                  {l.label}
+                  {link.label}
                 </a>
               </li>
             ))}
           </ul>
           <Button asChild variant="store" size="store" className="mt-4 w-full">
-            <a href={generalReservationLink} target="_blank" rel="noopener noreferrer">
+            <a
+              href={generalReservationLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+            >
               Reservar agora
             </a>
           </Button>
