@@ -1,16 +1,12 @@
 /**
- * Catálogo central da Manda Express.
- *
- * Para atualizar produtos: edite, adicione ou remova entradas em `produtos`.
- * Para trocar uma fotografia: coloque a nova imagem em src/assets e altere o import.
- * As fotografias atuais são demonstrativas (`demonstrativa: true`) — substitua-as
- * pelas fotografias reais dos artigos e mude o campo para `false`.
+ * Conteúdo editorial da seleção Manda Express.
+ * As fotografias atuais são demonstrativas e estão identificadas no site.
  */
 import relogioImg from "@/assets/produto-relogio-classico.jpg";
-import tenisImg from "@/assets/produto-tenis-branco.jpg";
-import roupaImg from "@/assets/produto-camisa-linho.jpg";
+import sapatosImg from "@/assets/produto-tenis-branco.jpg";
+import camisasImg from "@/assets/produto-camisa-linho.jpg";
 
-export type CategoriaId = "relogios" | "tenis" | "roupas";
+export type CategoriaId = "relogios" | "camisas" | "sapatos";
 
 export interface Categoria {
   id: CategoriaId;
@@ -19,57 +15,67 @@ export interface Categoria {
 
 export interface Produto {
   id: string;
+  codigo: string;
   categoria: CategoriaId;
-  /** Título visível no cartão */
   titulo: string;
+  headline: string;
   descricao: string;
-  /** Identificação do artigo enviada na mensagem do WhatsApp (não aparece no site) */
+  /** Nome descritivo usado na mensagem pré-preenchida do WhatsApp. */
   referencia: string;
   imagem: string;
   alt: string;
-  /** true enquanto a fotografia não for do artigo real em stock */
+  /** Mantém visível o aviso enquanto a fotografia for apenas demonstrativa. */
   demonstrativa: boolean;
 }
 
 export const categorias: Categoria[] = [
   { id: "relogios", nome: "Relógios" },
-  { id: "tenis", nome: "Tênis" },
-  { id: "roupas", nome: "Roupas" },
+  { id: "camisas", nome: "Camisas" },
+  { id: "sapatos", nome: "Sapatos" },
 ];
 
 export const produtos: Produto[] = [
   {
-    id: "relogio",
+    id: "relogios",
+    codigo: "ME-001",
     categoria: "relogios",
-    titulo: "Relógio",
-    descricao: "Mostrador branco e bracelete preta. Um clássico discreto para todos os dias.",
-    referencia: "Relógio prateado de mostrador branco e bracelete preta",
+    titulo: "Relógios",
+    headline: "O detalhe que acompanha o teu ritmo.",
+    descricao:
+      "Um relógio acrescenta presença sem precisar de exageros. Descobre uma seleção de modelos versáteis, pensados para acompanhar diferentes momentos e completar o teu visual com discrição e personalidade.",
+    referencia: "Relógio de mostrador claro e bracelete escura",
     imagem: relogioImg,
-    alt: "Relógio prateado com mostrador branco e bracelete de couro preta",
+    alt: "Imagem ilustrativa de um relógio clássico com mostrador claro e bracelete escura",
     demonstrativa: true,
   },
   {
-    id: "tenis",
-    categoria: "tenis",
-    titulo: "Tênis",
-    descricao: "Silhueta limpa, toda em branco. Combina com qualquer visual.",
-    referencia: "Tênis branco de cano baixo",
-    imagem: tenisImg,
-    alt: "Par de tênis brancos de cano baixo",
+    id: "camisas",
+    codigo: "ME-002",
+    categoria: "camisas",
+    titulo: "Camisas",
+    headline: "Simplicidade que se faz notar.",
+    descricao:
+      "Camisas de linhas simples e tons fáceis de combinar, para compor visuais cuidados no quotidiano ou em ocasiões especiais. Escolhas discretas que deixam o teu estilo falar por si.",
+    referencia: "Camisa de tom creme",
+    imagem: camisasImg,
+    alt: "Imagem ilustrativa de uma camisa em tom creme",
     demonstrativa: true,
   },
   {
-    id: "roupa",
-    categoria: "roupas",
-    titulo: "Roupa",
-    descricao: "Camisa de corte descontraído em tom creme, ideal para dias quentes.",
-    referencia: "Camisa creme de manga comprida",
-    imagem: roupaImg,
-    alt: "Camisa creme pendurada num cabide de madeira",
+    id: "sapatos",
+    codigo: "ME-003",
+    categoria: "sapatos",
+    titulo: "Sapatos",
+    headline: "O passo final de um visual completo.",
+    descricao:
+      "Silhuetas limpas e versáteis que completam diferentes combinações. Conhece a seleção da Manda Express e fala connosco para receber mais informações sobre os modelos.",
+    referencia: "Sapatos brancos de perfil baixo",
+    imagem: sapatosImg,
+    alt: "Imagem ilustrativa de um par de sapatos brancos de perfil baixo",
     demonstrativa: true,
   },
 ];
 
 export function nomeCategoria(id: CategoriaId) {
-  return categorias.find((c) => c.id === id)?.nome ?? id;
+  return categorias.find((categoria) => categoria.id === id)?.nome ?? id;
 }
